@@ -12,7 +12,9 @@ class ProductDetailScreen extends StatelessWidget {
     final product = context.read<ProductViewModel>().getProductById(productId);
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
+      appBar: AppBar(
+        title: Text(product.name),
+      ),
       body: Center(
         child: Text(
           '${product.name} - ₩${product.price}',
