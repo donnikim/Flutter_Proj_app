@@ -1,6 +1,7 @@
 import 'package:app_kiosk/widgets/bottom_nav_widget.dart';
 import 'package:app_kiosk/widgets/cart_fab_widget.dart';
 import 'package:app_kiosk/widgets/main_drawer_widget.dart';
+import 'package:app_kiosk/widgets/menu_dialog_widget.dart';
 import 'package:app_kiosk/widgets/menu_modal_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,9 +82,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         // 3.가운데에서 뜨는 알림창
                         showDialog(
                           context: context, 
-                          builder: (_)=>MenuModalWidget(
+                          builder: (_)=>MenuDialogWidget(
                             menuName: products[index].name, 
                             price: products[index].price,
+                            product: products[index],
                           ),
                         );
                       },

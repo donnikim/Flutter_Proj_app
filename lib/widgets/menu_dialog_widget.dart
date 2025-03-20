@@ -1,13 +1,19 @@
+import 'package:app_kiosk/models/product.dart';
+import 'package:app_kiosk/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MenuDialogWidget extends StatelessWidget {
   final String menuName;
   final int price;
 
+  final Product product;
+
   const MenuDialogWidget({
     super.key,
     required this.menuName,
     required this.price,
+    required this.product,
   });
 
   @override
@@ -15,13 +21,13 @@ class MenuDialogWidget extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 0,
-      backgroundColor: Colors.transparent,  // 그림자 줄 거라 배경 투명으로
+      backgroundColor: Colors.transparent, // 그림자 줄 거라 배경 투명으로
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
           // 카드 본체
           Container(
-            margin: const EdgeInsets.only(top: 60),  // 아이콘 공간 확보
+            margin: const EdgeInsets.only(top: 60), // 아이콘 공간 확보
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -37,10 +43,19 @@ class MenuDialogWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 40),  // 아이콘 아래 여백
-                Text(menuName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 40), // 아이콘 아래 여백
+                Text(
+                  menuName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text('₩$price', style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                Text(
+                  '₩$price',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
                 const SizedBox(height: 20),
 
                 Row(
@@ -49,9 +64,22 @@ class MenuDialogWidget extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Provider.of<CartViewModel>(
+                            context,
+                            listen: false,
+                          ).addToCart(product);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${product.name} 장바구니에 담겼습니다'),
+                              duration: Duration(milliseconds: 500),
+                            ),
+                          );
+                        },
                         child: const Text('주문하기'),
                       ),
                     ),
@@ -60,7 +88,9 @@ class MenuDialogWidget extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                         onPressed: () => Navigator.pop(context),
                         child: const Text('선물하기'),
@@ -76,7 +106,6 @@ class MenuDialogWidget extends StatelessWidget {
               ],
             ),
           ),
-
           // 상단 아이콘 (카드 밖으로 튀어나오게)
           CircleAvatar(
             radius: 40,

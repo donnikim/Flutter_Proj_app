@@ -12,7 +12,7 @@ class ProductItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap, // 대부분 카드위젯을 쓰지만 아래 코드는 카드를 커스터마이징한 것...
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
@@ -65,7 +65,10 @@ class ProductItemWidget extends StatelessWidget {
                     onPressed: () {
                     Provider.of<CartViewModel>(context, listen: false).addToCart(product);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${product.name} 장바구니에 담겼습니다')),
+                        SnackBar(
+                          content: Text('${product.name} 장바구니에 담겼습니다'),
+                          duration: Duration(milliseconds: 500),  
+                        ),
                       );
                     },
                   ),
